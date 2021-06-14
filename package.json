@@ -12,6 +12,9 @@
   },
   "author": "Mike K",
   "license": "ISC",
+  "bin": {
+    "get-git-status": "./index.js"
+  },
   "bugs": {
     "url": "https://github.com/mkaplan07/get-git-status/issues"
   },
