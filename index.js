@@ -44,5 +44,3 @@ module.exports = () => {
     }, 750);
   }
 }
-
-// getStatus();
