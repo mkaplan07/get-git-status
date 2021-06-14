@@ -1,0 +1,19 @@
+{
+  "name": "get-git-status",
+  "version": "0.0.1",
+  "description": "Script that runs git status for current directory and subdirectories",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkaplan07/get-status.git"
+  },
+  "author": "Mike K",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkaplan07/get-status/issues"
+  },
+  "homepage": "https://github.com/mkaplan07/get-status#readme"
+}
