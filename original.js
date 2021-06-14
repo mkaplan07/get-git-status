@@ -5,7 +5,7 @@ const { exec } = require('child_process');
 process.cwd() returns cwd;
 __dirname is the module's directory
 
-node ~/Desktop/docs/get-status/get-status.js
+node ~/Desktop/docs/get-git-status/original.js
 */
 
 let startingDir = process.cwd();
@@ -15,7 +15,7 @@ function repoCheck(sub = '') {
     console.log(sub.toUpperCase());
     if (error) {
       console.log(error.message);
-    } else if (stdout.includes('Untracked files:')) {
+    } else if (stdout.includes('Changes not staged for commit:')) {
       console.log(`\x1b[32m${stdout}\x1b[0m`);
     } else {
       console.log(`${stdout}`);
@@ -37,7 +37,6 @@ function getStatus() {
       }
     });
 
-    // TODO: improve print-out so it's easier to read
     setTimeout(() => {
       console.log(`\nChecking for repos...`);
     }, 500);

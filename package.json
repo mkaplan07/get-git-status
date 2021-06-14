@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mkaplan07/get-status.git"
+    "url": "https://github.com/mkaplan07/get-git-status"
   },
   "author": "Mike K",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mkaplan07/get-status/issues"
+    "url": "https://github.com/mkaplan07/get-git-status/issues"
   },
-  "homepage": "https://github.com/mkaplan07/get-status#readme"
+  "homepage": "https://github.com/mkaplan07/get-git-status"
 }

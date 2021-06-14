@@ -3,12 +3,12 @@ const { exec } = require('child_process');
 
 let startingDir = process.cwd();
 
-function repoCheck(sub = '') {
+let repoCheck = function(sub = '') {
   exec("git status", {cwd: `${startingDir}/${sub}`}, (error, stdout) => {
     console.log(sub.toUpperCase());
     if (error) {
       console.log(error.message);
-    } else if (stdout.includes('Untracked files:')) {
+    } else if (stdout.includes('Changes not staged for commit:') || stdout.includes('Untracked files:')) {
       console.log(`\x1b[32m${stdout}\x1b[0m`);
     } else {
       console.log(`${stdout}`);
@@ -16,7 +16,7 @@ function repoCheck(sub = '') {
   });
 }
 
-function getStatus() {
+let getStatus = function() {
   let contents = fs.readdirSync(`${startingDir}`);
 
   if (contents.includes('.git')) {
@@ -45,3 +45,4 @@ function getStatus() {
 }
 
 getStatus();
+// module.exports = getStatus;
