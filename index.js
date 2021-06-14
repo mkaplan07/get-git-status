@@ -45,4 +45,4 @@ let getStatus = () => {
   }
 }
 
-module.exports = getStatus();
+getStatus();
