@@ -17,7 +17,7 @@ let repoCheck = (sub = '') => {
   });
 }
 
-let getStatus = () => {
+module.exports = () => {
   let contents = fs.readdirSync(`${startingDir}`);
 
   if (contents.includes('.git')) {
@@ -45,5 +45,4 @@ let getStatus = () => {
   }
 }
 
-getStatus();
-// module.exports = getStatus;
+// getStatus();
