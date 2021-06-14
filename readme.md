@@ -7,7 +7,7 @@ get-git-status is a script that runs ```git status``` for the current directory 
 Via [npm](https://www.npmjs.com/):
 
 ```bash
-npm install get-git-status
+npm install -g get-git-status
 ```
 
 ## Usage
