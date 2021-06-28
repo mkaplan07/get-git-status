@@ -8,18 +8,15 @@ let startingDir = process.cwd();
 let repoCheck = (sub = '') => {
   let msgs = ['Changes not staged for commit:', 'Untracked files:', 'Changes to be committed:'];
   exec("git status", {cwd: `${startingDir}/${sub}`}, (error, stdout) => {
-    let printout = '';
     if (msgs.some((msg) => stdout.includes(msg))) {
-      if (!sub) { // TODO: flip these
-        console.log(`\x1b[32m${startingDir.split('/').pop()}\x1b[0m\n${stdout}`);
-      } else {
-        msgs.forEach(msg => {
-          if (stdout.includes(msg)) {
-            let re = new RegExp(msg, 'g');
-            printout = stdout.replace(re,`\x1b[1m${msg}\x1b[0m`);
-          }
+      if (sub) {
+        let re = new RegExp('branch', 'g');
+        let printout = stdout.replace(re, function(match) {
+          return `\x1b[1m${match}\x1b[0m`;
         })
         console.log(`\x1b[32m${sub}\x1b[0m\n${printout}`);
+      } else {
+        console.log(`\x1b[32m${startingDir.split('/').pop()}\x1b[0m\n${stdout}`);
       }
     }
   });
