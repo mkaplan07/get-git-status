@@ -8,13 +8,18 @@ let startingDir = process.cwd();
 let repoCheck = (sub = '') => {
   let msgs = ['Changes not staged for commit:', 'Untracked files:', 'Changes to be committed:'];
   exec("git status", {cwd: `${startingDir}/${sub}`}, (error, stdout) => {
-    console.log(sub.toUpperCase());
-    if (error) {
-      console.log(error.message);
-    } else if (msgs.some((msg) => stdout.includes(msg))) {
-      console.log(`\x1b[32m${stdout}\x1b[0m`)
-    } else {
-      console.log(`${stdout}`);
+    let printout = '';
+    if (msgs.some((msg) => stdout.includes(msg))) {
+      if (!sub) {
+        console.log(`\x1b[32m${startingDir.split('/').pop()}\x1b[0m\n${stdout}`);
+      } else {
+        msgs.forEach(msg => {
+          if (stdout.includes(msg)) {
+            printout = stdout.replace(msg,`\x1b[1m${msg}\x1b[0m`);
+          }
+        })
+        console.log(`\x1b[32m${sub}\x1b[0m\n${printout}`);
+      }
     }
   });
 }
@@ -25,25 +30,30 @@ let getStatus = () => {
   if (contents.includes('.git')) {
     repoCheck();
   } else {
-    console.log(`\nNot a repo. Scanning ${startingDir} for directories...`);
+    console.log(`\nNot a repo.\nScanning ${startingDir} for subdirectories...`);
     let results = fs.readdirSync(startingDir, { withFileTypes: true });
+    let subs = false;
     results.forEach(result => {
       if (result.isDirectory()) {
+        subs = true;
         console.log(`• ${result.name}`);
       }
     });
 
     setTimeout(() => {
-      console.log(`\nChecking for repos...`);
+      if (subs) {
+        console.log(`\nChecking for repos...`);
+        setTimeout(() => {
+          results.forEach(result => {
+            if (result.isDirectory()) {
+              repoCheck(result.name);
+            }
+          });
+        }, 750);
+      } else {
+        console.log('\nNo subdirectories. Goodbye.');
+      }
     }, 500);
-
-    setTimeout(() => {
-      results.forEach(result => {
-        if (result.isDirectory()) {
-          repoCheck(result.name);
-        }
-      });
-    }, 750);
   }
 }
 
