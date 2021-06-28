@@ -8,16 +8,24 @@ let startingDir = process.cwd();
 let repoCheck = (sub = '') => {
   let msgs = ['Changes not staged for commit:', 'Untracked files:', 'Changes to be committed:'];
   exec("git status", {cwd: `${startingDir}/${sub}`}, (error, stdout) => {
-    if (msgs.some((msg) => stdout.includes(msg))) {
+    let stdoutArr = stdout.split('\n');
+    if (msgs.some(msg => stdout.includes(msg))) {
+      stdoutArr.forEach((line, idx, src) => {
+        if (msgs.includes(line)) {
+          src[idx] = `\x1b[1m${line}\x1b[0m`;
+        }
+      });
+      stdoutArr = stdoutArr.join('\n');
+
       if (sub) {
-        let re = new RegExp('branch', 'g');
-        let printout = stdout.replace(re, function(match) {
-          return `\x1b[1m${match}\x1b[0m`;
-        })
-        console.log(`\x1b[32m${sub}\x1b[0m\n${printout}`);
+        console.log(`\x1b[32m${sub}\x1b[0m\n${stdoutArr}`);
       } else {
-        console.log(`\x1b[32m${startingDir.split('/').pop()}\x1b[0m\n${stdout}`);
+        console.log(`\x1b[32m${startingDir.split('/').pop()}\x1b[0m\n${stdoutArr}`);
       }
+    }
+
+    if (!sub && stdout.includes('up to date')) {
+      console.log(`${startingDir} is up to date.`);
     }
   });
 }
@@ -27,31 +35,23 @@ let getStatus = () => {
 
   if (contents.includes('.git')) {
     repoCheck();
+    return;
+  }
+
+  console.log(`Not a repo...\nScanning ${startingDir} for subdirectories...`);
+  let results = fs.readdirSync(startingDir, { withFileTypes: true }).filter(result => result.isDirectory());
+
+  if (!results.length) {
+    console.log('No subdirectories. Try another folder.');
   } else {
-    console.log(`\nNot a repo.\nScanning ${startingDir} for subdirectories...`);
-    let results = fs.readdirSync(startingDir, { withFileTypes: true });
-    let subs = false;
     results.forEach(result => {
-      if (result.isDirectory()) {
-        subs = true;
-        console.log(`• ${result.name}`);
-      }
+      console.log(`• ${result.name}`)
     });
 
-    setTimeout(() => {
-      if (subs) {
-        console.log(`\nChecking for repos...`);
-        setTimeout(() => {
-          results.forEach(result => {
-            if (result.isDirectory()) {
-              repoCheck(result.name);
-            }
-          });
-        }, 750);
-      } else {
-        console.log('\nNo subdirectories. Goodbye.');
-      }
-    }, 500);
+    console.log(`\nChecking for unstaged, untracked or uncommitted...`);
+    results.forEach(result => {
+      repoCheck(result.name); // TODO: docs/ – if repoCheck has nothing to say, 'no repos'
+    });
   }
 }
 
