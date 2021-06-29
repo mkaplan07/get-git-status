@@ -17,16 +17,16 @@ let repoCheck = (sub = '') => {
       });
       stdoutArr = stdoutArr.join('\n');
 
-      console.log(sub ? `\x1b[32m${sub}\x1b[0m\n${stdoutArr}` : `\x1b[32m${startingDir.split('/').pop()}\x1b[0m\n${stdoutArr}`);
+      console.log(sub ? `• ${sub}\n${stdoutArr}` : `• ${startingDir.split('/').pop()}\n${stdoutArr}`);
       return;
     }
 
     if (error) {
-      console.log(`\x1b[32m${sub}\x1b[0m is not a repo`);
+      console.log(`• ${sub} is not a repo`);
     } else if (sub && stdout.includes('up to date')) {
-      console.log(`${sub} is up to date.`);
+      console.log(`• ${sub} is \x1b[32mup to date\x1b[0m`);
     } else {
-      console.log(`${startingDir} is up to date.`);
+      console.log(`• ${startingDir} is \x1b[32mup to date\x1b[0m`);
     }
   });
 }
@@ -50,21 +50,6 @@ let getStatus = () => {
   results.forEach(result => {
     repoCheck(result.name);
   });
-
-  // console.log(`\nChecking for unstaged, untracked or uncommitted...`);
-  // if (!results.length) {
-  //   console.log('No subdirectories. Try another folder.');
-  // } else {
-  //   results.forEach(result => {
-  //     console.log(`• ${result.name}`)
-  //   });
-  //
-  //   console.log(`\nChecking for unstaged, untracked or uncommitted...`);
-  //
-  //   results.forEach(result => {
-  //     repoCheck(result.name);
-  //   });
-  // }
 }
 
 getStatus();
