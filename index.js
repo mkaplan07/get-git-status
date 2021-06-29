@@ -12,12 +12,12 @@ let repoCheck = (sub = '') => {
       let stdoutArr = stdout.split('\n');
       stdoutArr.forEach((line, idx, src) => {
         if (msgs.includes(line)) {
-          src[idx] = `\x1b[1m${line}\x1b[0m`;
+          src[idx] = `\x1b[4m${line}\x1b[0m`;
         }
       });
       stdoutArr = stdoutArr.join('\n');
 
-      console.log(sub ? `• ${sub}\n${stdoutArr}` : `• ${startingDir.split('/').pop()}\n${stdoutArr}`);
+      console.log(sub ? `• \x1b[1m${sub}\x1b[0m\n${stdoutArr}` : `${stdoutArr}`);
       return;
     }
 
@@ -26,7 +26,7 @@ let repoCheck = (sub = '') => {
     } else if (sub && stdout.includes('up to date')) {
       console.log(`• ${sub} is \x1b[32mup to date\x1b[0m`);
     } else {
-      console.log(`• ${startingDir} is \x1b[32mup to date\x1b[0m`);
+      console.log(`\x1b[32mup to date\x1b[0m`);
     }
   });
 }
@@ -40,16 +40,19 @@ let getStatus = () => {
   }
 
   console.log(`Not a repo\nScanning ${startingDir} for subdirectories...`);
-  let results = fs.readdirSync(startingDir, { withFileTypes: true }).filter(result => result.isDirectory());
 
-  if (!results.length) {
-    console.log('No subdirectories. Try another folder.');
-    return;
-  }
+  setTimeout(() => {
+    let results = fs.readdirSync(startingDir, { withFileTypes: true }).filter(result => result.isDirectory());
 
-  results.forEach(result => {
-    repoCheck(result.name);
-  });
+    if (!results.length) {
+      console.log('No subdirectories');
+      return;
+    }
+
+    results.forEach(result => {
+      repoCheck(result.name);
+    });
+  }, 500);
 }
 
 getStatus();
