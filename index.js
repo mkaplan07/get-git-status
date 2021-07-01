@@ -21,6 +21,9 @@ let repoCheck = (sub = '') => {
       return;
     }
 
+    // TODO: when “Your branch is ahead of 'origin/master' by 1 commit”
+    // I don't want to bold it; just be sure the directory prints properly
+
     if (error) {
       console.log(`• ${sub} is not a repo`);
     } else if (sub && stdout.includes('up to date')) {
