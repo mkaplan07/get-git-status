@@ -6,7 +6,7 @@ const { exec } = require('child_process');
 let startingDir = process.cwd();
 
 let repoCheck = (sub = '') => {
-  let msgs = ['Changes not staged for commit:', 'Untracked files:', 'Changes to be committed:'];
+  let msgs = ['Changes not staged', 'Untracked files:', 'Changes to be committed:', 'Your branch is ahead'];
   exec("git status", {cwd: `${startingDir}/${sub}`}, (error, stdout) => {
     if (msgs.some(msg => stdout.includes(msg))) {
       let stdoutArr = stdout.split('\n');
@@ -21,7 +21,7 @@ let repoCheck = (sub = '') => {
       return;
     }
 
-    // TODO: when “Your branch is ahead of 'origin/master' by 1 commit”
+    // TODO: when “Your branch is ahead of 'origin/master'...”
     // I don't want to bold it; just be sure the directory prints properly
 
     if (error) {
