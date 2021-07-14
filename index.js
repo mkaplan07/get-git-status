@@ -26,7 +26,7 @@ let repoCheck = (sub = '') => {
     } else if (sub && stdout.includes('up to date')) {
       console.log(`• ${sub} is \x1b[32mup to date\x1b[0m`);
     } else {
-      console.log(`\x1b[32mup to date\x1b[0m`);
+      console.log(`• ${startingDir}/${sub} is \x1b[32mup to date\x1b[0m`);
     }
   });
 }
