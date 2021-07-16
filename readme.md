@@ -2,6 +2,8 @@
 
 get-git-status is a script that runs ```git status``` for the current directory and subdirectories
 
+![get-git-status](ggs.gif)
+
 ## Installation
 
 Via [npm](https://www.npmjs.com/):
