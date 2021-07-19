@@ -1,6 +1,6 @@
 {
   "name": "get-git-status",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Script that runs git status for current directory and subdirectories",
   "main": "index.js",
   "scripts": {
